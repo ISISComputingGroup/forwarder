@@ -10,4 +10,4 @@ if "%INSTRUMENT%" == "HIFI" (
 )
 
 echo "starting forwarder"
-python C:\Instrument\Apps\EPICS\isis\forwarder\forwarder_launch.py --status-topic=%BROKER%/%INSTRUMENT%_forwarderStatus --config-topic=%BROKER%/%INSTRUMENT%_forwarderConfig --storage-topic=%BROKER%/%INSTRUMENT%_forwarderStorage  --output-broker=%BROKER% --log-file C:\Instrument\var\log\forwarder\forwarder-log.txt
+python C:\Instrument\Apps\EPICS\isis\forwarder\forwarder_launch.py --status-topic=%BROKER%/%INSTRUMENT%_forwarderStatus --config-topic=%BROKER%/%INSTRUMENT%_forwarderConfig --storage-topic=%BROKER%/%INSTRUMENT%_forwarderStorage  --output-broker=%BROKER%
