@@ -33,6 +33,9 @@ class KafkaProducer:
         except BaseException as e:
             self.logger.exception(e)
 
+    def flush(self):
+        self._producer.flush()
+
     def close(self):
         self._cancelled = True
         self._poll_thread.join()

@@ -2,7 +2,7 @@ import time
 from typing import Dict
 from unittest import mock
 
-from confluent_kafka import TopicPartition
+from confluent_kafka import TopicPartition, KafkaException, KafkaError
 from streaming_data_types.fbschemas.forwarder_config_update_fc00.UpdateType import (
     UpdateType,
 )
@@ -49,7 +49,20 @@ class ConfigurationStore:
     def retrieve_configuration(self):
         """Retrieve last valid configuration buffer."""
         topic = TopicPartition(self._topic, partition=0)
-        low_offset, high_offset = self._consumer.get_watermark_offsets(topic)
+        try:
+            low_offset, high_offset = self._consumer.get_watermark_offsets(topic)
+        except KafkaException as e:
+            kafka_error = e.args[0]
+
+            if kafka_error == KafkaError._UNKNOWN_PARTITION:
+                # Topic doesn't exist yet - create it (assuming auto-create is enabled)
+                message = serialise_fc00(UpdateType.REMOVEALL, [])
+                self._producer.produce(self._topic, bytes(message), int(time.time() * 1000))
+                self._producer.flush()
+                low_offset, high_offset = self._consumer.get_watermark_offsets(topic)
+            else:
+                raise
+
         # Set offset to current_offset to start retrieving from last message
         current_offset = high_offset - 1
         topic.offset = current_offset
