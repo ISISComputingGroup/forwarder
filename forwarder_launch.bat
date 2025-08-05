@@ -2,7 +2,7 @@ setlocal
 call %~dp0..\..\..\config_env_base.bat
 @echo on
 set "GETMACRO=%EPICS_KIT_ROOT%\support\icpconfig\master\bin\%EPICS_HOST_ARCH%\icpconfigGetMacro.exe"
-set "MYIOCNAME=FORWARDER"
+set "MYIOCNAME=FWDR"
 set "KAFKA_BROKER=livedata.isis.cclrc.ac.uk:31092"
 REM allow local config override in globals.txt
 for /f %%a in ( '%GETMACRO% "KAFKA_BROKER" %MYIOCNAME%'  ) do ( set "KAFKA_BROKER=%%a" )
