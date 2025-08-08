@@ -7,6 +7,7 @@
 * Refactor statistics reporter to support dynamically added metrics
 * Add latency and per-PV graphite metrics
 * Add containerfile
+* add support for streaming PV units (`un00` schema)
 
 ## v2.1.0
 
